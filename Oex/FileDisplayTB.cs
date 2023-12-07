@@ -1,44 +1,24 @@
 ﻿using kvi;
 
 namespace Oex {
-	internal class FileDisplayTB {
-		internal KviTextBox ktb;
+	public class FileDisplayTB :KviTextBox {
 		internal FileItemType Type { get; private set;}
 
-		internal FileDisplayTB(String _name, FileItemType _type) {
-			ktb = new KviTextBox();
-			ktb.Text = _name;
-			ktb.Name = _name;
-			Type = _type;
-			ktb.Multiline = false;
-			ktb.BorderStyle = BorderStyle.None;
-			ktb.ExpandEvent.OverEscapeHandler += ExpandEvent_OverEscapeHandler;
-			ktb.GotFocus += Ktb_GotFocusHandler;
+		public FileDisplayTB(String _name):base() {
+			//Text = "hogaaaa";
+			//Multiline = false;
+			//Height = Font.Height + 2;
+			//BorderStyle = BorderStyle.None;
+			//ExpandEvent.OverEscapeHandler += ExpandEvent_OverEscapeHandler;
+			//GotFocus += Ktb_GotFocusHandler;
 		}
 
 		private void Ktb_GotFocusHandler(object? sender, EventArgs e) {
-			ktb.Parent.Select();
+			Parent.Select();
 		}
 
 		private void ExpandEvent_OverEscapeHandler() {
-			ktb.Parent.Select();
-		}
-
-		/// <summary>
-		///	kTextBoxのコントロールサイズをセットする。
-		/// </summary>
-		/// <param name="_xSize"></param>
-		/// <param name="_ySize"></param>
-		/// <returns></returns>
-		internal bool SetSize(int _xSize, int _ySize){
-			ktb.Width = _xSize;
-			ktb.Height = _ySize;
-			return true;
-		}
-		internal bool SetSize(Size _size){
-			ktb.Width = _size.Width;
-			ktb.Height = _size.Height;
-			return true;
+			Parent.Select();
 		}
 	}
 }

@@ -7,10 +7,11 @@ namespace si {
 		internal OedPanel oed;
 
 		public SiAppSet(Size _size, Point _location){
+			SetSize(_size);
+			this.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Left;
+			SetLocation(_location);
 			oex = new OexPanel(_size, _location);
 			oed = new OedPanel(_size, _location);
-			SetSize(_size);
-			SetLocation(_location);
 
 			oex.ExpandEvent.FileOpenHandler += StartOed;
 			oed.ExpandEvent.FileCloseHandler += EndOed;
@@ -25,8 +26,8 @@ namespace si {
 
 		public void SetLocation(Point value) {
 			Location = value;
-			oex.SetLocation(value);
-			oed.SetLocation(value);
+			//oex.SetLocation(value);
+		//	oed.SetLocation(value);
 		}
 
 		public void SetSize(Size value) {

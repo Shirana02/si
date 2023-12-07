@@ -1,36 +1,60 @@
-﻿namespace Oex {
+﻿using kvi;
+using System.Diagnostics;
+
+namespace Oex {
 	public class OexPanel :Control {
 		internal int displayNum;
 		private OexControler controler;
 		public  OexEvent ExpandEvent{ get; private set; }
 
 		RichTextBox currentPath;
-		List<FileDisplayTB> displayList;
+//		List<FileDisplayTB> ___displayList;
+		FlowLayoutPanel displayList;
 		Size displayListAreaSize;
 
 		public OexPanel(Size _size, Point _location){
 			ExpandEvent = new OexEvent();
+
 			currentPath = new RichTextBox();
+			currentPath.Height = currentPath.Font.Height + 2;
 			currentPath.BackColor = Color.Red;
 			currentPath.Text = "dummy path";
 			currentPath.Multiline = false;
-			currentPath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+			currentPath.Dock = DockStyle.Top;
 			this.Controls.Add(currentPath);
 
-			displayList = new List<FileDisplayTB>();
-			var hogehoge = new FileDisplayTB("", FileItemType.File);
-			hogehoge.ktb.Anchor = AnchorStyles.Right | AnchorStyles.Left;
-			displayList.Add(hogehoge);
+			displayList = new FlowLayoutPanel();
+			displayList.Size = this.ClientSize;
+			displayList.Top = currentPath.Bottom;
+			displayList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			displayList.FlowDirection = FlowDirection.TopDown;
+			this.Controls.Add(displayList);
+			displayList.BringToFront();
 
-			this.Controls.Add(displayList[0].ktb);
+			FileDisplayTB item0 = new FileDisplayTB("hogefugaereki");
+			//item0.Dock = DockStyle.Left;
+			item0.Text = "hogeeeeeeeeeeeeeeeeeeege";
+			displayList.Controls.Add(item0);
 
-			this.SetSize(_size);
-			this.SetLocation(_location);
+			KviTextBox kvi = new KviTextBox();
+			kvi.Text = "hohohhoh";
+			displayList.Controls.Add(kvi);
+
+
+			TextBox tk = new TextBox();
+			tk.Dock = DockStyle.Left;
+			displayList.Controls.Add(tk);
+			tk.Text = "tk1";
+			TextBox tk2 = new TextBox();
+			displayList.Controls.Add(tk2);
+			tk2.Text = "tk2";
+
+//			this.SetSize(_size);
+//			this.SetLocation(_location);
 
 
 			controler = new OexControler(this);
-			PointCursor(0);
-			SetStyle(ControlStyles.ResizeRedraw, true);
+			//PointCursor(0);
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e){
@@ -38,6 +62,7 @@
 			controler.RecieveKey(e.KeyData, this);
 		}
 
+/*
 		//フォーム内表示調整ロジック
 		/// <summary>
 		/// OexPanelの位置情報を更新し、内部の各コントロールの位置を計算する。
@@ -66,7 +91,6 @@
 			adjustDisplayListLength();
 			return true;
 		}
-
 		//サイズ調整用メソッドたち
 		private bool refreshCurrentPathAreaSize(){
 			currentPath.Size = new Size(Size.Width, currentPath.Lines.Length * Font.Height + 2);
@@ -116,6 +140,7 @@
 		}
 		//フォーム内表示調整ロジックーーー
 
+*/
 		//カーソル操作IF
 		internal bool PointCursor(int _idx){
 			SelectionStart = _idx;
@@ -145,13 +170,19 @@
 			}
 		}
 		private bool refreshCursorDisplay(){
-			for(int i = 0; i < displayList.Count; i++){
+			for(int i = 0; i < displayList.Controls.Count; i++){
 				if(SelectionStart <= i && i < SelectionStart + SelectionLength){
-					displayList[i].ktb.BackColor = Color.Aqua;
+					FileDisplayTB? listitem = ControlToFileDisplayTB(displayList.Controls[i]);
+					if(listitem != null){ 
+						listitem.BackColor = Color.Aqua;
+					}
 				}
 				else{
 					//displayList[i].ktb.BackColor = this.BackColor;
-					displayList[i].ktb.BackColor = Color.Yellow;
+					FileDisplayTB? listitem = ControlToFileDisplayTB(displayList.Controls[i]);
+					if(listitem != null){ 
+						listitem.BackColor = Color.Yellow;
+					}
 				}
 			}
 			return true;
@@ -164,17 +195,29 @@
 			return true;
 		}
 		internal bool refreshItemDisplay(List<string> _items){
-			for(int i = 0; i < displayList.Count; i++){
-				displayList[i].ktb.Update();
-				if(_items.Count <= i){
-					displayList[i].ktb.Text = "";
-					break;
+			for(int i = 0; i < displayList.Controls.Count; i++){
+				FileDisplayTB? listitem = ControlToFileDisplayTB(displayList.Controls[i]);
+				if(listitem != null) {
+					listitem.Update();
+					if(_items.Count <= i) {
+						listitem.Text = "";
+						break;
+					}
+					listitem.Text = _items[i];
 				}
-				displayList[i].ktb.Text = _items[i];
 			}
 			return true;
 		}
 		//描画更新IFーーー
+
+		//その他
+		FileDisplayTB? ControlToFileDisplayTB(Control _ctrl){
+			if(_ctrl is FileDisplayTB){
+				return (FileDisplayTB)_ctrl;
+			}
+			return null;
+		}
+		//その他ーーー
 		
 	}
 }
