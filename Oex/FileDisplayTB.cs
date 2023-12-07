@@ -2,6 +2,10 @@
 
 namespace Oex {
 	public class FileDisplayTB :KviTextBox {
+		public FileDisplayTB(String _name):base() {
+		}
+
+		/*
 		internal FileItemType Type { get; private set;}
 
 		public FileDisplayTB(String _name):base() {
@@ -12,6 +16,7 @@ namespace Oex {
 			//ExpandEvent.OverEscapeHandler += ExpandEvent_OverEscapeHandler;
 			//GotFocus += Ktb_GotFocusHandler;
 		}
+		*/
 
 		private void Ktb_GotFocusHandler(object? sender, EventArgs e) {
 			Parent.Select();
