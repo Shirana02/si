@@ -1,223 +1,112 @@
 ﻿using kvi;
-using System.Diagnostics;
 
 namespace Oex {
-	public class OexPanel :Control {
-		internal int displayNum;
+	public partial class OexPanel :UserControl {
+		private int fileItemCount;
+		private int selectionStartIdx;
+		private int selectionEndIdx;
+
 		private OexControler controler;
-		public  OexEvent ExpandEvent{ get; private set; }
 
-		RichTextBox currentPath;
-//		List<FileDisplayTB> ___displayList;
-		FlowLayoutPanel displayList;
-		Size displayListAreaSize;
-
-		public OexPanel(Size _size, Point _location){
-			ExpandEvent = new OexEvent();
-
-			currentPath = new RichTextBox();
-			currentPath.Height = currentPath.Font.Height + 2;
-			currentPath.BackColor = Color.Red;
-			currentPath.Text = "dummy path";
-			currentPath.Multiline = false;
-			currentPath.Dock = DockStyle.Top;
-			this.Controls.Add(currentPath);
-
-			displayList = new FlowLayoutPanel();
-			displayList.Size = this.ClientSize;
-			displayList.Top = currentPath.Bottom;
-			displayList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			displayList.FlowDirection = FlowDirection.TopDown;
-			this.Controls.Add(displayList);
-			displayList.BringToFront();
-
-			FileDisplayTB item0 = new FileDisplayTB("hogefugaereki");
-			//item0.Dock = DockStyle.Left;
-			item0.Text = "hogeeeeeeeeeeeeeeeeeeege";
-			displayList.Controls.Add(item0);
-
-			KviTextBox kvi = new KviTextBox();
-			kvi.Text = "hohohhoh";
-			displayList.Controls.Add(kvi);
-
-
-			TextBox tk = new TextBox();
-			tk.Dock = DockStyle.Left;
-			displayList.Controls.Add(tk);
-			tk.Text = "tk1";
-			TextBox tk2 = new TextBox();
-			displayList.Controls.Add(tk2);
-			tk2.Text = "tk2";
-
-//			this.SetSize(_size);
-//			this.SetLocation(_location);
-
-
+		public OexPanel() {
+			InitializeComponent();
 			controler = new OexControler(this);
-			//PointCursor(0);
 		}
 
-		protected override void OnKeyDown(KeyEventArgs e){
+		//CtrlEvent
+		private void KeyDownEvent_OexLogic(object? sender, KeyEventArgs e){
 			base.OnKeyDown(e);
 			controler.RecieveKey(e.KeyData, this);
 		}
+		private void FocusEvent_ToDummyFocusCtrl(object? sender, EventArgs e){
+		}
+		//CtrlEvent---
 
-/*
-		//フォーム内表示調整ロジック
-		/// <summary>
-		/// OexPanelの位置情報を更新し、内部の各コントロールの位置を計算する。
-		/// 計算された情報は各コントロールの位置プロパティとして更新される。
-		/// </summary>
-		/// <param name="_location"></param>
-		/// <returns></returns>
-		public bool SetLocation(Point _location){
-			Location = _location;
-			refreshCurrentPathAreaLocation();
-			refreshDisplayListItemLocation();
-			return true;
+		//Prop
+		public string FocusedItemName{
+			get{ return flp_DisplayList.Controls[SelectionStartIdx].Text; }
 		}
-
-		/// <summary>
-		/// OexPanelのサイズ情報から、内部に配置する各コントロールのサイズと個数を計算し、必要ならコントロールを追加する。
-		/// </summary>
-		/// <param name="_size"></param>
-		/// <returns></returns>
-		public bool SetSize(Size _size){
-			Size = _size;
-			refreshCurrentPathAreaSize();
-			refreshDisplayListAreaSize();
-			refreshFileItemSize();
-			refreshFileItemDisplayNum();
-			adjustDisplayListLength();
-			return true;
-		}
-		//サイズ調整用メソッドたち
-		private bool refreshCurrentPathAreaSize(){
-			currentPath.Size = new Size(Size.Width, currentPath.Lines.Length * Font.Height + 2);
-			return true;
-		}
-		private bool refreshDisplayListAreaSize(){
-			int width = Size.Width;
-			int height = Size.Height - currentPath.Size.Height;
-			displayListAreaSize = new Size(width, height);
-			return true;
-		}
-		private bool refreshFileItemSize(){
-			foreach(FileDisplayTB item in displayList){
-				item.SetSize(displayListAreaSize.Width - 2, Font.Height + 2);
-			}
-			return true;
-		}
-		private bool refreshFileItemDisplayNum(){
-			displayNum = displayListAreaSize.Height / displayList[0].ktb.Height;
-			return true;
-		}
-		private bool adjustDisplayListLength(){
-			while(displayList.Count < displayNum) { 
-				displayList.Add(new FileDisplayTB("",FileItemType.File));
-				displayList[displayList.Count - 1].SetSize(displayList[0].ktb.Size);
-				this.Controls.Add(displayList[displayList.Count - 1].ktb);
-			}
-			if(displayList.Count > displayNum){
-				displayList.RemoveRange(displayNum, displayList.Count - displayNum);
-			}
-			return true;
-		}
-
-		//表示場所調整用メソッドたち
-		private bool refreshCurrentPathAreaLocation(){
-			currentPath.Location = this.Location;
-			return true;
-		}
-		private bool refreshDisplayListItemLocation(){
-			int locationHoriOffset = currentPath.Location.X;
-			int locationVertOffset = currentPath.Location.Y + currentPath.Height;
-			foreach(FileDisplayTB item in displayList){
-				item.ktb.Location = new Point(locationHoriOffset, locationVertOffset);
-				locationVertOffset += item.ktb.Size.Height;
-			}
-			return true;
-		}
-		//フォーム内表示調整ロジックーーー
-
-*/
-		//カーソル操作IF
-		internal bool PointCursor(int _idx){
-			SelectionStart = _idx;
-			SelectionLength = 1;
-			refreshCursorDisplay(); 
-			return true;
-		}
-		internal bool SelectRange(int _startIdx, int _endIdx){
-			SelectionStart = _startIdx;
-			SelectionLength = _endIdx - SelectionStart;
-			refreshCursorDisplay(); 
-			return true;
-		}
-		private int selectionStart;
-		internal int SelectionStart{
-			get{ return selectionStart; }
-			private set{ 
-				selectionStart = value; 
-				refreshCursorDisplay(); 
-			}
-		}
-		private int selectionLength;
-		internal int SelectionLength{
-			get{ return selectionLength; }
-			private set{ 
-				selectionLength = value; 
-			}
-		}
-		private bool refreshCursorDisplay(){
-			for(int i = 0; i < displayList.Controls.Count; i++){
-				if(SelectionStart <= i && i < SelectionStart + SelectionLength){
-					FileDisplayTB? listitem = ControlToFileDisplayTB(displayList.Controls[i]);
-					if(listitem != null){ 
-						listitem.BackColor = Color.Aqua;
-					}
+		public int SelectionStartIdx{
+			get { return selectionStartIdx; }
+			set {
+				if(value < 0){ 
+					selectionStartIdx = 0;
+				}
+				else if(fileItemCount <= value){
+					selectionStartIdx = fileItemCount;
 				}
 				else{
-					//displayList[i].ktb.BackColor = this.BackColor;
-					FileDisplayTB? listitem = ControlToFileDisplayTB(displayList.Controls[i]);
-					if(listitem != null){ 
-						listitem.BackColor = Color.Yellow;
-					}
+					selectionStartIdx = value;
+				}
+				focusFile(selectionStartIdx);
+			}
+		}
+		public int FileItemCount{
+			get { return fileItemCount; }
+		}
+		public int SelectionEndIdx{
+			get { return selectionEndIdx; }
+			set {
+				if(value < 0){ 
+					selectionEndIdx = 0;
+				}
+				else if(fileItemCount <= value){
+					selectionEndIdx = fileItemCount;
+				}
+				else{
+					selectionEndIdx = value;
 				}
 			}
-			return true;
 		}
-		//カーソル操作IFーーー
+		//Prop---
 
-		//描画更新IF
-		internal bool refreshDirectoryPathDisplay(string _path){
-			currentPath.Text = _path;
+		//Method
+		public bool ScrollFileList(int _idx){
+			if(_idx < 0)
+				return false;
+			if(fileItemCount <= _idx)
+				return false;
+
+			flp_DisplayList.ScrollControlIntoView(flp_DisplayList.Controls[_idx]);
 			return true;
 		}
-		internal bool refreshItemDisplay(List<string> _items){
-			for(int i = 0; i < displayList.Controls.Count; i++){
-				FileDisplayTB? listitem = ControlToFileDisplayTB(displayList.Controls[i]);
-				if(listitem != null) {
-					listitem.Update();
-					if(_items.Count <= i) {
-						listitem.Text = "";
-						break;
-					}
-					listitem.Text = _items[i];
+
+		public void UpdateFileList(List<string> _files){
+			flp_DisplayList.Controls.Clear();
+			if(_files.Count == 0){
+				flp_DisplayList.Controls.Add(new KviTextBox());
+				flp_DisplayList.Controls[0].Height = flp_DisplayList.Controls[0].Font.Height + 5;
+				flp_DisplayList.Controls[0].Text = "---NoFile---";
+				flp_DisplayList.Controls[0].GotFocus += FocusEvent_ToDummyFocusCtrl;
+				return;
+			}
+
+			int i = 0;
+			foreach(string item in _files){
+				flp_DisplayList.Controls.Add(new KviTextBox());
+				flp_DisplayList.Controls[i].Height = flp_DisplayList.Controls[i].Font.Height + 4;
+				flp_DisplayList.Controls[i].Text = item;
+				flp_DisplayList.Controls[i].GotFocus += FocusEvent_ToDummyFocusCtrl;
+				i++;
+			}
+			fileItemCount = _files.Count;
+		}
+		//Method---
+
+		//method
+		private void focusFile(int _idx){
+			for(int i = 0; i < fileItemCount; i++){
+				if(i == _idx){
+					flp_DisplayList.Controls[i].BackColor = SystemColors.ActiveCaption;
+				}
+				else{
 				}
 			}
-			return true;
 		}
-		//描画更新IFーーー
+		//method---
 
-		//その他
-		FileDisplayTB? ControlToFileDisplayTB(Control _ctrl){
-			if(_ctrl is FileDisplayTB){
-				return (FileDisplayTB)_ctrl;
-			}
-			return null;
+		private void OexPanel_Load(object sender, EventArgs e) {
 		}
-		//その他ーーー
-		
+
 	}
 }

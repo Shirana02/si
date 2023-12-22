@@ -20,7 +20,7 @@ namespace Oex {
 		}
 
 		internal DirectoryDisplayData(){
-			DirectoryData = new DirectoryData();
+			DirectoryData = new DirectoryData(Environment.CurrentDirectory);
 			SelectStart = 0;
 			SelectLength = 1;
 			DisplayStart = 0;

@@ -1,38 +1,38 @@
 ﻿
 namespace Oex {
 	internal class OexMode {
-		internal EditMode Mode { get; private set; }
+		internal OexModes Mode { get; private set; }
 		public OexMode() {
-			Mode = EditMode.Normal;
+			Mode = OexModes.Normal;
 		}
 
 		public bool IntoNormal() {
-			if(Mode == EditMode.Normal) {
+			if(Mode == OexModes.Normal) {
 				return false;
 			}
 
-			Mode = EditMode.Normal;
+			Mode = OexModes.Normal;
 			return true;
 		}
 		public bool IntoSelect() {
-			if(Mode != EditMode.Normal) {
+			if(Mode != OexModes.Normal) {
 				return false;
 			}
 
-			Mode = EditMode.Select;
+			Mode = OexModes.Select;
 			return true;
 		}
 		public bool IntoInsert() {
-			if(Mode != EditMode.Normal) {
+			if(Mode != OexModes.Normal) {
 				return false;
 			}
 
-			Mode = EditMode.Insert;
+			Mode = OexModes.Insert;
 			return true;
 		}
 	}
 
-	internal enum EditMode {
+	internal enum OexModes {
 		Normal,
 		Insert,
 		Select,

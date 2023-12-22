@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="_OexPanel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\kvi\kvi.csproj" />
   </ItemGroup>
 

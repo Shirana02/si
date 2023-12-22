@@ -25,14 +25,14 @@ namespace Oex {
 		}
 		*/
 
-		public static int MoveVertical(int _step, DirectoryDisplayData _field){
-			if(_field.DirectoryData.GetItemCount() <= _field.SelectStart + _step){
-				return _field.DirectoryData.GetItemCount() - 1;
+		public static int MoveVertical(int _start, int _step, int _fileCount){
+			if(_fileCount <= _fileCount + _step){
+				return _fileCount - 1;
 			}
-			if(_field.SelectStart + _step < 0){
+			if(_start + _step < 0){
 				return 0;
 			}
-			return _field.SelectStart + _step;
+			return _start + _step;
 		}
 	}
 }

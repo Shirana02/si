@@ -3,16 +3,11 @@
 		protected List<string> fileList;
 		protected List<string> directoryList;
 
-		internal DirectoryData(){
-			System.Environment.CurrentDirectory = Path.GetDirectoryName(Application.ExecutablePath) ?? @"c:\";
-			fileList = new List<string>();
-			directoryList = new List<string>();
-
-		}
 		internal DirectoryData(string _path){
 			MoveCurrentPath(_path);
 			fileList = new List<string>();
 			directoryList = new List<string>();
+			RefleshList();
 		}
 
 		//情報提供IF
@@ -42,6 +37,9 @@
 			if(_directoryIdx < 0 || directoryList.Count <= _directoryIdx)
 				return "";
 			return directoryList[_directoryIdx];
+		}
+		internal List<string> GetAllFileName(){
+			return directoryList.Concat<string>(fileList).ToList();
 		}
 		//情報提供IF---
 

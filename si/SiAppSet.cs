@@ -2,6 +2,7 @@
 using Oed;
 
 namespace si {
+/*
 	internal class SiAppSet :Control {
 		internal OexPanel oex;
 		internal OedPanel oed;
@@ -11,7 +12,7 @@ namespace si {
 			this.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Left;
 			SetLocation(_location);
 			oex = new OexPanel(_size, _location);
-			oed = new OedPanel(_size, _location);
+			oed = new _OedPanel(_size, _location);
 
 			oex.ExpandEvent.FileOpenHandler += StartOed;
 			oed.ExpandEvent.FileCloseHandler += EndOed;
@@ -64,4 +65,5 @@ namespace si {
 		}
 		//イベントハンドラーーー
 	}
+	*/
 }

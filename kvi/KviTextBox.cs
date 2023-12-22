@@ -46,20 +46,6 @@ namespace kvi {
 				return true;
 			}
 
-		//文字列編集IF
-			internal bool CutText(){
-				Cut();
-				return true;
-			}
-			internal bool YankText(){
-				Copy();
-				return true;
-			}
-			internal bool PutText(){
-				Paste();
-				return true;
-			}
-
 		//情報取得IF
 			internal int GetSelectionEnd(){
 				return SelectionStart + SelectionLength;

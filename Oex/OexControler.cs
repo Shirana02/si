@@ -2,44 +2,48 @@
 namespace Oex {
 	internal class OexControler {
 		internal OexMode Mode { get; private set; }
-		private DirectoryDisplayData displayData;
+		private DirectoryData dir;
 
-		internal OexControler(OexPanel _target){
-			displayData = new DirectoryDisplayData();
+		internal OexControler(OexPanel _oexPanel){
+			dir = new DirectoryData(Environment.CurrentDirectory);
 			Mode = new OexMode();
-
-			refreshDirectory_DisplayAndData(_target);
+			_oexPanel.UpdateFileList(dir.GetAllFileName());
 		}
 
-		internal bool RecieveKey(Keys _key, OexPanel _target){
+		internal bool RecieveFocus(OexPanel _oexPanel){
+			if(Mode.Mode == OexModes.Normal){
+			}
+		}
+
+		internal bool RecieveKey(Keys _key, OexPanel _oexPanel){
 			if(_key == (Keys.Control | Keys.OemOpenBrackets)){
 				if(Mode.IntoNormal()){
-					_target.PointCursor(_target.SelectionStart);
+					_oexPanel.SelectionEndIdx = _oexPanel.SelectionStartIdx;
 				}
 				return true;
 			}
 
 			switch(_key) {
 				case (Keys.Control | Keys.W):
-					event_Ctrl_w(_target);
+					event_Ctrl_w(_oexPanel);
 					break;
 				case Keys.Enter:
-					event_Enter(_target);
+					event_Enter(_oexPanel);
 					break;
 				case Keys.H:
-					event_h(_target);
+					event_h(_oexPanel);
 					break;
 				case Keys.L:
-					event_l(_target);
+					event_l(_oexPanel);
 					break;
 				case Keys.J:
-					event_j(_target);
+					event_j(_oexPanel);
 					break;
 				case Keys.K:
-					event_k(_target);
+					event_k(_oexPanel);
 					break;
 				case Keys.I:
-					event_i(_target);
+					event_i(_oexPanel);
 					break;
 				default:
 					break;
@@ -47,131 +51,124 @@ namespace Oex {
 			return true;
 		}
 
-		private bool refreshDirectory_DisplayAndData(OexPanel _target){
-			_target.refreshDirectoryPathDisplay(displayData.DirectoryData.GetCurrentPath());
-			displayData.DirectoryData.RefleshList();
-			_target.refreshItemDisplay(displayData.GetDisplayFileNameList(_target.displayNum));
+		private bool updateListEffect(OexPanel _oexPanel){
 			return true;
 		}
-
-		private void event_Ctrl_w(OexPanel _target){
+		private bool updateListItem(OexPanel _oexPanel){
+			return true;
+		}
+		private string getFocusedFullPath(OexPanel _oexPanel){ 
+			return 
+				dir.GetCurrentPath()
+				+ @"\"
+				+ _oexPanel.FocusedItemName;
+		}
+		//private List<string> getSelectedItemFullPath(OexPanel _oexPanel){}
+		private void event_Ctrl_w(OexPanel _oexPanel){
 			switch(Mode.Mode) {
-				case EditMode.Normal:
-					_target.ExpandEvent.OverEsc();
+				case OexModes.Normal:
+					//_oexPanel.ExpandEvent.OverEsc();
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
+				case OexModes.Select:
 					break;
 				default:
 					break;
 			}
 		}
-		private void event_Enter(OexPanel _target){
+		private void event_Enter(OexPanel _oexPanel){
 			switch(Mode.Mode) {
-				case EditMode.Normal:
-					string filePath = displayData.DirectoryData.GetCurrentPath() + @"\" + displayData.DirectoryData.GetItemName(displayData.SelectStart);
+				case OexModes.Normal:
+					string filePath = getFocusedFullPath(_oexPanel);
 					if(File.Exists(filePath)) {
-						_target.ExpandEvent.FileOpen(filePath);
+						//_oexPanel.ExpandEvent.FileOpen(filePath);
 					}
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
+				case OexModes.Select:
 					break;
 				default:
 					break;
 			}
 		}
-		private void event_i(OexPanel _target){
+		private void event_i(OexPanel _oexPanel){
 			switch(Mode.Mode) {
-				case EditMode.Normal:
+				case OexModes.Normal:
 					Mode.IntoInsert();
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
-					break;
-				default:
-					break;
-			}
-		}
-		private void event_esc(OexPanel _target){
-			switch(Mode.Mode) {
-				case EditMode.Normal:
-					break;
-				case EditMode.Insert:
-					if(Mode.IntoNormal()){ 
-						_target.PointCursor(_target.SelectionStart);
-					}
-					break;
-				case EditMode.Select:
-					if(Mode.IntoNormal()){ 
-						_target.PointCursor(_target.SelectionStart);
-					}
+				case OexModes.Select:
 					break;
 				default:
 					break;
 			}
 		}
 
-		private void event_l(OexPanel _target) {
+		private void event_l(OexPanel _oexPanel) {
 			switch(Mode.Mode) {
-				case EditMode.Normal:
-					displayData.DirectoryData.MoveDownCurrentPathTo(displayData.DirectoryData.GetItemName(displayData.SelectStart));
-					displayData.SelectStart = 0;
-					_target.PointCursor(0);
-					refreshDirectory_DisplayAndData(_target);
+				case OexModes.Normal:
+					//displayData.DirectoryData.MoveDownCurrentPathTo(displayData.DirectoryData.GetItemName(displayData.SelectStart));
+					dir.MoveDownCurrentPathTo(_oexPanel.FocusedItemName);
+					_oexPanel.UpdateFileList(dir.GetAllFileName());
+					_oexPanel.SelectionStartIdx = 0;
+					_oexPanel.ScrollFileList(0);
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
+				case OexModes.Select:
 					break;
 				default:
 					break;
 			}
 		}
-		private void event_j(OexPanel _target) {
+		private void event_j(OexPanel _oexPanel) {
 			switch(Mode.Mode) {
-				case EditMode.Normal:
-					int dst = CursorMoving.MoveVertical(1, displayData);
-					displayData.SelectStart = dst;
-					_target.PointCursor(dst);
+				case OexModes.Normal:
+					int dst = CursorMoving.MoveVertical(_oexPanel.SelectionStartIdx, 1, _oexPanel.FileItemCount);
+					_oexPanel.SelectionStartIdx = dst;
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
+				case OexModes.Select:
 					break;
 				default:
 					break;
 			}
 		}
-		private void event_k(OexPanel _target) {
+		private void event_k(OexPanel _oexPanel) {
 			switch(Mode.Mode) {
-				case EditMode.Normal:
-					int dst = CursorMoving.MoveVertical(-1, displayData);
-					displayData.SelectStart = dst;
-					_target.PointCursor(dst);
+				case OexModes.Normal:
+					int dst = CursorMoving.MoveVertical(_oexPanel.SelectionStartIdx, -1, _oexPanel.FileItemCount);
+					_oexPanel.SelectionStartIdx = dst;
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
+				case OexModes.Select:
 					break;
 				default:
 					break;
 			}
 		}
-		private void event_h(OexPanel _target) {
+		private void event_h(OexPanel _oexPanel) {
 			switch(Mode.Mode) {
-				case EditMode.Normal:
+				case OexModes.Normal:
+					dir.MoveUpCurrentPath();
+					_oexPanel.UpdateFileList(dir.GetAllFileName());
+					_oexPanel.SelectionStartIdx = 0;
+					_oexPanel.ScrollFileList(0);
+					/*
 					displayData.DirectoryData.MoveUpCurrentPath();
 					displayData.SelectStart = 0;
-					_target.PointCursor(0);
-					refreshDirectory_DisplayAndData(_target);
+					_oexPanel.PointCursor(0);
+					refreshDirectory_DisplayAndData(_oexPanel);
+					*/
 					break;
-				case EditMode.Insert:
+				case OexModes.Insert:
 					break;
-				case EditMode.Select:
+				case OexModes.Select:
 					break;
 				default:
 					break;

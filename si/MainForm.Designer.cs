@@ -23,13 +23,27 @@
 		///  the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			oex = new Oex.OexPanel();
 			SuspendLayout();
+			// 
+			// oex
+			// 
+			oex.Dock = DockStyle.Fill;
+			oex.Location = new Point(0, 0);
+			oex.Margin = new Padding(4, 5, 4, 5);
+			oex.Name = "oex";
+			oex.SelectionEndIdx = 0;
+			oex.SelectionStartIdx = 0;
+			oex.Size = new Size(1143, 750);
+			oex.TabIndex = 1;
 			// 
 			// MainForm
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
+			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(800, 450);
+			ClientSize = new Size(1143, 750);
+			Controls.Add(oex);
+			Margin = new Padding(4, 5, 4, 5);
 			Name = "MainForm";
 			Text = "si";
 			Load += MainForm_Load;
@@ -38,5 +52,7 @@
 		}
 
 		#endregion
+
+		private Oex.OexPanel oex;
 	}
 }

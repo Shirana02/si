@@ -5,12 +5,12 @@ namespace si {
 	public partial class MainForm :Form {
 		public MainForm() {
 			InitializeComponent();
-			siAppSet = new SiAppSet(this.ClientSize, new Point(0, 0));
-			this.Controls.Add(siAppSet);
+			//siAppSet = new SiAppSet(this.ClientSize, new Point(0, 0));
+			//this.Controls.Add(siAppSet);
 		}
 
 
-		private SiAppSet siAppSet;
+		//private SiAppSet siAppSet;
 		private void MainForm_Load(object sender, EventArgs e) {
 		}
 
