@@ -91,6 +91,10 @@ namespace Oex {
 			}
 			fileItemCount = _files.Count;
 		}
+
+		public void FocusPanel(){
+			txt_DummyFocusCtrl_DisplayList.Focus();		
+		}
 		//Method---
 
 		//method

@@ -10,8 +10,9 @@ namespace Oex {
 			_oexPanel.UpdateFileList(dir.GetAllFileName());
 		}
 
-		internal bool RecieveFocus(OexPanel _oexPanel){
+		internal void RecieveFocus(OexPanel _oexPanel){
 			if(Mode.Mode == OexModes.Normal){
+				_oexPanel.FocusPanel();
 			}
 		}
 
