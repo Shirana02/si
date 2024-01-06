@@ -6,11 +6,13 @@ namespace Oex {
 		private int selectionStartIdx;
 		private int selectionEndIdx;
 
+		public OexEvent ExpandEvent;
 		private OexControler controler;
 
 		public OexPanel() {
 			InitializeComponent();
 			controler = new OexControler(this);
+			ExpandEvent = new OexEvent();
 		}
 
 		//CtrlEvent
@@ -19,6 +21,7 @@ namespace Oex {
 			controler.RecieveKey(e.KeyData, this);
 		}
 		private void FocusEvent_ToDummyFocusCtrl(object? sender, EventArgs e){
+			controler.RecieveFocus(this);
 		}
 		//CtrlEvent---
 
@@ -38,7 +41,6 @@ namespace Oex {
 				else{
 					selectionStartIdx = value;
 				}
-				focusFile(selectionStartIdx);
 			}
 		}
 		public int FileItemCount{
@@ -95,19 +97,21 @@ namespace Oex {
 		public void FocusPanel(){
 			txt_DummyFocusCtrl_DisplayList.Focus();		
 		}
-		//Method---
 
-		//method
-		private void focusFile(int _idx){
+		public void PaintSelectedItem(){
 			for(int i = 0; i < fileItemCount; i++){
-				if(i == _idx){
-					flp_DisplayList.Controls[i].BackColor = SystemColors.ActiveCaption;
+				if(SelectionStartIdx == i){
+					flp_DisplayList.Controls[i].BackColor = Color.Aquamarine;
+				}
+				else if(SelectionStartIdx <= i && i <= selectionEndIdx){
+					flp_DisplayList.Controls[i].BackColor = Color.MediumAquamarine;
 				}
 				else{
+					flp_DisplayList.Controls[i].BackColor = SystemColors.Control;
 				}
 			}
 		}
-		//method---
+		//Method---
 
 		private void OexPanel_Load(object sender, EventArgs e) {
 		}

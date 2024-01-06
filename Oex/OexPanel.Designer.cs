@@ -69,10 +69,12 @@ namespace Oex {
 			// 
 			txt_DummyFocusCtrl_DisplayList.Location = new Point(29, -1);
 			txt_DummyFocusCtrl_DisplayList.Name = "txt_DummyFocusCtrl_DisplayList";
+			txt_DummyFocusCtrl_DisplayList.ReadOnly = true;
 			txt_DummyFocusCtrl_DisplayList.Size = new Size(100, 23);
 			txt_DummyFocusCtrl_DisplayList.TabIndex = 3;
 			txt_DummyFocusCtrl_DisplayList.Text = "hoge";
 			txt_DummyFocusCtrl_DisplayList.WordWrap = false;
+			txt_DummyFocusCtrl_DisplayList.KeyDown += KeyDownEvent_OexLogic;
 			// 
 			// OexPanel
 			// 

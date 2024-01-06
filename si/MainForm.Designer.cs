@@ -30,23 +30,22 @@
 			// 
 			oex.Dock = DockStyle.Fill;
 			oex.Location = new Point(0, 0);
-			oex.Margin = new Padding(4, 5, 4, 5);
 			oex.Name = "oex";
 			oex.SelectionEndIdx = 0;
 			oex.SelectionStartIdx = 0;
-			oex.Size = new Size(1143, 750);
+			oex.Size = new Size(800, 450);
 			oex.TabIndex = 1;
 			// 
 			// MainForm
 			// 
-			AutoScaleDimensions = new SizeF(10F, 25F);
+			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(1143, 750);
+			ClientSize = new Size(800, 450);
 			Controls.Add(oex);
-			Margin = new Padding(4, 5, 4, 5);
 			Name = "MainForm";
 			Text = "si";
 			Load += MainForm_Load;
+			Shown += MainForm_Shown;
 			ResizeEnd += MainForm_ResizeEnd;
 			ResumeLayout(false);
 		}

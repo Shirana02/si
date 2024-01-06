@@ -17,5 +17,10 @@ namespace si {
 		private void MainForm_ResizeEnd(object sender, EventArgs e) {
 			//siAppSet.Size = new Size(this.ClientSize.Width, this.ClientSize.Height);
 		}
+
+		private void MainForm_Shown(object sender, EventArgs e){
+			oex.FocusPanel();
+			oex.PaintSelectedItem();
+		}
 	}
 }

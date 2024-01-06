@@ -1,4 +1,6 @@
 ﻿
+using System.Diagnostics;
+
 namespace kvi {
 	public class KviTextBox :RichTextBox {
 		private KviControler controler;
@@ -20,6 +22,7 @@ namespace kvi {
 			base.OnGotFocus(e);
 			controler.Mode.IntoNormal();
 			ReadOnly = true;
+			Debug.Print(this.Name);
 		}
 
 		protected override void OnKeyDown(KeyEventArgs e) {

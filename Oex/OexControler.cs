@@ -83,7 +83,7 @@ namespace Oex {
 				case OexModes.Normal:
 					string filePath = getFocusedFullPath(_oexPanel);
 					if(File.Exists(filePath)) {
-						//_oexPanel.ExpandEvent.FileOpen(filePath);
+						_oexPanel.ExpandEvent.FileOpen(filePath);
 					}
 					break;
 				case OexModes.Insert:
@@ -111,7 +111,6 @@ namespace Oex {
 		private void event_l(OexPanel _oexPanel) {
 			switch(Mode.Mode) {
 				case OexModes.Normal:
-					//displayData.DirectoryData.MoveDownCurrentPathTo(displayData.DirectoryData.GetItemName(displayData.SelectStart));
 					dir.MoveDownCurrentPathTo(_oexPanel.FocusedItemName);
 					_oexPanel.UpdateFileList(dir.GetAllFileName());
 					_oexPanel.SelectionStartIdx = 0;
@@ -130,6 +129,8 @@ namespace Oex {
 				case OexModes.Normal:
 					int dst = CursorMoving.MoveVertical(_oexPanel.SelectionStartIdx, 1, _oexPanel.FileItemCount);
 					_oexPanel.SelectionStartIdx = dst;
+					_oexPanel.SelectionEndIdx = dst;
+					_oexPanel.PaintSelectedItem();
 					break;
 				case OexModes.Insert:
 					break;
@@ -144,6 +145,8 @@ namespace Oex {
 				case OexModes.Normal:
 					int dst = CursorMoving.MoveVertical(_oexPanel.SelectionStartIdx, -1, _oexPanel.FileItemCount);
 					_oexPanel.SelectionStartIdx = dst;
+					_oexPanel.SelectionEndIdx = dst;
+					_oexPanel.PaintSelectedItem();
 					break;
 				case OexModes.Insert:
 					break;
