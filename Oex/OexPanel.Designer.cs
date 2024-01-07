@@ -59,6 +59,7 @@ namespace Oex {
 			flp_DisplayList.Dock = DockStyle.Fill;
 			flp_DisplayList.FlowDirection = FlowDirection.TopDown;
 			flp_DisplayList.Location = new Point(0, 23);
+			flp_DisplayList.Margin = new Padding(3, 3, 0, 0);
 			flp_DisplayList.Name = "flp_DisplayList";
 			flp_DisplayList.Size = new Size(167, 59);
 			flp_DisplayList.TabIndex = 1;

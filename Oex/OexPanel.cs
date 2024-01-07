@@ -15,6 +15,9 @@ namespace Oex {
 			ExpandEvent = new OexEvent();
 		}
 
+		private void OexPanel_Load(object sender, EventArgs e) {
+		}
+
 		//CtrlEvent
 		private void KeyDownEvent_OexLogic(object? sender, KeyEventArgs e){
 			base.OnKeyDown(e);
@@ -73,11 +76,17 @@ namespace Oex {
 			return true;
 		}
 
+		public void UpdateCurrentPathDisplay(string _currentPath){
+			ktb_CurrentPath.Text = _currentPath;
+		}
+
 		public void UpdateFileList(List<string> _files){
 			flp_DisplayList.Controls.Clear();
 			if(_files.Count == 0){
 				flp_DisplayList.Controls.Add(new KviTextBox());
 				flp_DisplayList.Controls[0].Height = flp_DisplayList.Controls[0].Font.Height + 5;
+				flp_DisplayList.Controls[0].Width = this.Width;
+				flp_DisplayList.Controls[0].Anchor = AnchorStyles.Right;
 				flp_DisplayList.Controls[0].Text = "---NoFile---";
 				flp_DisplayList.Controls[0].GotFocus += FocusEvent_ToDummyFocusCtrl;
 				return;
@@ -86,8 +95,11 @@ namespace Oex {
 			int i = 0;
 			foreach(string item in _files){
 				flp_DisplayList.Controls.Add(new KviTextBox());
-				flp_DisplayList.Controls[i].Height = flp_DisplayList.Controls[i].Font.Height + 4;
+				flp_DisplayList.Controls[i].Height = flp_DisplayList.Controls[i].Font.Height + 5;
+				flp_DisplayList.Controls[i].Width = this.Width;
+				flp_DisplayList.Controls[i].Anchor = AnchorStyles.Right;
 				flp_DisplayList.Controls[i].Text = item;
+				flp_DisplayList.Controls[i].Margin = new Padding(0);
 				flp_DisplayList.Controls[i].GotFocus += FocusEvent_ToDummyFocusCtrl;
 				i++;
 			}
@@ -112,9 +124,6 @@ namespace Oex {
 			}
 		}
 		//Method---
-
-		private void OexPanel_Load(object sender, EventArgs e) {
-		}
 
 	}
 }

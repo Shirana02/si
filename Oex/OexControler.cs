@@ -8,6 +8,7 @@ namespace Oex {
 			dir = new DirectoryData(Environment.CurrentDirectory);
 			Mode = new OexMode();
 			_oexPanel.UpdateFileList(dir.GetAllFileName());
+			_oexPanel.UpdateCurrentPathDisplay(dir.GetCurrentPath());
 		}
 
 		internal void RecieveFocus(OexPanel _oexPanel){
@@ -52,12 +53,6 @@ namespace Oex {
 			return true;
 		}
 
-		private bool updateListEffect(OexPanel _oexPanel){
-			return true;
-		}
-		private bool updateListItem(OexPanel _oexPanel){
-			return true;
-		}
 		private string getFocusedFullPath(OexPanel _oexPanel){ 
 			return 
 				dir.GetCurrentPath()
@@ -114,7 +109,10 @@ namespace Oex {
 					dir.MoveDownCurrentPathTo(_oexPanel.FocusedItemName);
 					_oexPanel.UpdateFileList(dir.GetAllFileName());
 					_oexPanel.SelectionStartIdx = 0;
+					_oexPanel.SelectionEndIdx = 0;
 					_oexPanel.ScrollFileList(0);
+					_oexPanel.PaintSelectedItem();
+					_oexPanel.UpdateCurrentPathDisplay(dir.GetCurrentPath());
 					break;
 				case OexModes.Insert:
 					break;
@@ -162,13 +160,10 @@ namespace Oex {
 					dir.MoveUpCurrentPath();
 					_oexPanel.UpdateFileList(dir.GetAllFileName());
 					_oexPanel.SelectionStartIdx = 0;
+					_oexPanel.SelectionEndIdx = 0;
 					_oexPanel.ScrollFileList(0);
-					/*
-					displayData.DirectoryData.MoveUpCurrentPath();
-					displayData.SelectStart = 0;
-					_oexPanel.PointCursor(0);
-					refreshDirectory_DisplayAndData(_oexPanel);
-					*/
+					_oexPanel.PaintSelectedItem();
+					_oexPanel.UpdateCurrentPathDisplay(dir.GetCurrentPath());
 					break;
 				case OexModes.Insert:
 					break;

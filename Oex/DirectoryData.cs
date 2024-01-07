@@ -69,12 +69,14 @@
 
 			if(Directory.Exists(_path)) {
 				System.Environment.CurrentDirectory = _path;
+				RefleshList();
 				return true;
 			}
 			return false;
 		}
 		internal bool MoveUpCurrentPath(){
 			System.Environment.CurrentDirectory = Path.GetFullPath(@"..\", System.Environment.CurrentDirectory);
+				RefleshList();
 			return true;
 		}
 		internal bool MoveDownCurrentPathTo(string _target) {
@@ -91,6 +93,7 @@
 			catch(UnauthorizedAccessException){
 				return false;
 			}
+			RefleshList();
 			return true;
 		}
 		//情報更新IF---
