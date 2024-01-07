@@ -1,4 +1,6 @@
-﻿namespace Oex {
+﻿using System.Diagnostics;
+
+namespace Oex {
 	internal class DirectoryData {
 		protected List<string> fileList;
 		protected List<string> directoryList;
@@ -45,8 +47,13 @@
 
 		//情報更新IF
 		internal bool RefleshList(){
-			fileList = Directory.GetFiles(System.Environment.CurrentDirectory).ToList();
-			directoryList = Directory.GetDirectories(System.Environment.CurrentDirectory).ToList();
+			try {
+				fileList = Directory.GetFiles(System.Environment.CurrentDirectory).ToList();
+				directoryList = Directory.GetDirectories(System.Environment.CurrentDirectory).ToList();
+			}
+			catch(UnauthorizedAccessException){
+				return false;
+			}
 
 			if(fileList.Count != 0){ 
 				for(int i = 0; i < fileList.Count; i++){
