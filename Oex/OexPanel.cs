@@ -86,23 +86,25 @@ namespace Oex {
 				flp_DisplayList.Controls.Add(new KviTextBox());
 				flp_DisplayList.Controls[0].Height = flp_DisplayList.Controls[0].Font.Height + 5;
 				flp_DisplayList.Controls[0].Width = this.Width;
-				flp_DisplayList.Controls[0].Anchor = AnchorStyles.Right;
 				flp_DisplayList.Controls[0].Text = "---NoFile---";
 				flp_DisplayList.Controls[0].GotFocus += FocusEvent_ToDummyFocusCtrl;
+				fileItemCount = _files.Count;
 				return;
 			}
 
 			int i = 0;
+			Padding pad = new Padding(0);
+			flp_DisplayList.SuspendLayout();
 			foreach(string item in _files){
 				flp_DisplayList.Controls.Add(new KviTextBox());
 				flp_DisplayList.Controls[i].Height = flp_DisplayList.Controls[i].Font.Height + 5;
 				flp_DisplayList.Controls[i].Width = this.Width;
-				flp_DisplayList.Controls[i].Anchor = AnchorStyles.Right;
 				flp_DisplayList.Controls[i].Text = item;
-				flp_DisplayList.Controls[i].Margin = new Padding(0);
+				flp_DisplayList.Controls[i].Margin = pad;
 				flp_DisplayList.Controls[i].GotFocus += FocusEvent_ToDummyFocusCtrl;
 				i++;
 			}
+			flp_DisplayList.ResumeLayout();
 			fileItemCount = _files.Count;
 		}
 
