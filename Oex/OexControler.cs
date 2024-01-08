@@ -29,8 +29,8 @@ namespace Oex {
 				case (Keys.Control | Keys.W):
 					event_Ctrl_w(_oexPanel);
 					break;
-				case Keys.Enter:
-					event_Enter(_oexPanel);
+				case Keys.O:
+					event_o(_oexPanel);
 					break;
 				case Keys.H:
 					event_h(_oexPanel);
@@ -73,7 +73,7 @@ namespace Oex {
 					break;
 			}
 		}
-		private void event_Enter(OexPanel _oexPanel){
+		private void event_o(OexPanel _oexPanel){
 			switch(Mode.Mode) {
 				case OexModes.Normal:
 					string filePath = getFocusedFullPath(_oexPanel);

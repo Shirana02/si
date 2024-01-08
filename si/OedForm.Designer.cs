@@ -1,12 +1,12 @@
 ﻿namespace si {
-	partial class MainForm {
+	partial class OedForm {
 		/// <summary>
-		///  Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
 		/// <summary>
-		///  Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing) {
@@ -19,38 +19,34 @@
 		#region Windows Form Designer generated code
 
 		/// <summary>
-		///  Required method for Designer support - do not modify
-		///  the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			oex = new Oex.OexPanel();
+			oed = new Oed.OedPanel();
 			SuspendLayout();
 			// 
-			// oex
+			// oed
 			// 
-			oex.Dock = DockStyle.Fill;
-			oex.Location = new Point(0, 0);
-			oex.Name = "oex";
-			oex.SelectionEndIdx = 0;
-			oex.SelectionStartIdx = 0;
-			oex.Size = new Size(800, 450);
-			oex.TabIndex = 1;
+			oed.Dock = DockStyle.Fill;
+			oed.Location = new Point(0, 0);
+			oed.Name = "oed";
+			oed.Size = new Size(800, 450);
+			oed.TabIndex = 0;
 			// 
-			// MainForm
+			// OedForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
-			Controls.Add(oex);
-			Name = "MainForm";
-			Text = "si";
-			Load += MainForm_Load;
-			Shown += MainForm_Shown;
+			Controls.Add(oed);
+			Name = "OedForm";
+			Text = "OedForm";
 			ResumeLayout(false);
 		}
 
 		#endregion
 
-		private Oex.OexPanel oex;
+		private Oed.OedPanel oed;
 	}
 }

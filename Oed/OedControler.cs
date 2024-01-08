@@ -1,7 +1,4 @@
-﻿
-using kvi;
-
-namespace Oed {
+﻿namespace Oed {
 	internal class OedControler {
 		internal OedMode Mode { get; private set; }
 		internal CommandLogic command;

@@ -3,24 +3,35 @@ using Oex;
 
 namespace si {
 	public partial class MainForm :Form {
+		OedForm oed;
+
 		public MainForm() {
 			InitializeComponent();
-			//siAppSet = new SiAppSet(this.ClientSize, new Point(0, 0));
-			//this.Controls.Add(siAppSet);
+			oed = new OedForm();
+
+			oex.ExpandEvent.FileOpenHandler += openOed;
 		}
 
-
-		//private SiAppSet siAppSet;
 		private void MainForm_Load(object sender, EventArgs e) {
-		}
-
-		private void MainForm_ResizeEnd(object sender, EventArgs e) {
-			//siAppSet.Size = new Size(this.ClientSize.Width, this.ClientSize.Height);
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e){
 			oex.FocusPanel();
 			oex.PaintSelectedItem();
+		}
+
+		private void openOed(string _path){
+			if(oed.IsDisposed){
+				oed = new OedForm();
+				if(oed.OpenFIle(_path)){
+					oed.Show();
+				}
+			}
+			else{
+				if(oed.OpenFIle(_path)){
+					oed.Show();
+				}
+			}
 		}
 	}
 }

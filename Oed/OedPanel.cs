@@ -1,94 +1,47 @@
-﻿using kvi;
-
-namespace Oed {
-	public class OedPanel :Control {
+﻿namespace Oed {
+	public partial class OedPanel :UserControl {
 		public OedEvent ExpandEvent{ get; set; }
 		private OedControler controler;
+		public string? FilePath{ get; private set; }
 
-		internal RichTextBox filePath;
-		internal KviTextBox textKtb;
-		internal KviTextBox commandKtb;
+		public OedPanel() {
+			InitializeComponent();
 
-		public OedPanel(Size _size, Point _location){
 			controler = new OedControler();
 			ExpandEvent = new OedEvent();
 
-			filePath = new RichTextBox();
-			filePath.Multiline = false;
-			filePath.ReadOnly = true;
+			ktb_textArea.ExpandEvent.PressColonHandler += selectCommandArea;
 
-			textKtb = new KviTextBox();
-			textKtb.ExpandEvent.PressColonHandler += selectCommandKtb;
-
-			commandKtb = new KviTextBox();
-			commandKtb.Multiline = false;
-			commandKtb.ExpandEvent.PressColonHandler += selectTextKtb;
-			commandKtb.ExpandEvent.PressEnterHandler += recieveCommand;
-
-			SetSize(_size);
-			SetLocation(_location);
-
-			this.Controls.Add(filePath);
-			this.Controls.Add(textKtb);
-			this.Controls.Add(commandKtb);
+			ktb_commandArea.ExpandEvent.PressColonHandler += selectTextKtb;
+			ktb_commandArea.ExpandEvent.PressEnterHandler += recieveCommand;
 
 			GotFocus += gotFocusHandler;
 		}
 
-		protected override void OnKeyDown(KeyEventArgs e){
-			base.OnKeyDown(e);
-			controler.RecieveKey(e.KeyData, this);
-		}
+		//Method
+		public bool OpenFile(string _path){
+			if(!System.IO.File.Exists(_path))
+				return false;
 
-		//フォーム内表示調整ロジック
-		public bool SetLocation(Point _location){
-			Location = _location;
-			filePath.Location = _location;
-			textKtb.Location = new Point(_location.X, _location.Y + filePath.Height);
-			commandKtb.Location = new Point(_location.X, textKtb.Location.Y + textKtb.Height);
-			return true;
-		}
-
-		public bool SetSize(Size _size){
-			Size = _size;
-			filePath.Size = new Size(_size.Width, filePath.Font.Height + 2);
-			commandKtb.Width = _size.Width;
-			commandKtb.Height = commandKtb.Font.Height + 2;
-			textKtb.Width = _size.Width;
-			textKtb.Height = _size.Height - filePath.Height - commandKtb.Height;
-			return true;
-		}
-		//フォーム内表示調整ロジックーーー
-
-		//アプリ初期化IF
-		public bool ReloadOed(string _filePath){
-			reloadFile(_filePath);
-			selectTextKtb();
-			return true;
-		}
-
-		public bool reloadFile(string _filePath) {
-			filePath.Text = _filePath;
-			using(var sr = new StreamReader(_filePath)) {
-				if(sr != null) {
-					textKtb.Text = sr.ReadToEnd();
-				}
+			FilePath = _path;
+			using(StreamReader sr = new StreamReader(_path)){
+				ktb_textArea.Text = sr.ReadToEnd();
 			}
-			return true;
+				return true;
 		}
-		//アプリ初期化IFーーー
+		//Method---
 
 		//イベントハンドラ
 		private void gotFocusHandler(object? sender, EventArgs e){
-			textKtb.Select();
+			ktb_textArea.Select();
 		}
-		private void selectCommandKtb(){
-			commandKtb.Select();
+		private void selectCommandArea(){
+			ktb_commandArea.Select();
 			SendKeys.Send("i");
 		}
 		private void selectTextKtb(){
-			commandKtb.Clear();
-			textKtb.Select();
+			ktb_commandArea.Clear();
+			ktb_textArea.Select();
 		}
 		private void recieveCommand(){
 			controler.command.RecieveCommand(this);
